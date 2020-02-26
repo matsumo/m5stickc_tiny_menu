@@ -56,6 +56,8 @@ void setup() {
 
   tft.setCursor(0, 8);
   tft.print(">");
+
+  xTaskCreatePinnedToCore(bridge, "bridge", 4096, NULL, 1, NULL, 1);
 }
 
 void loop() {
