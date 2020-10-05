@@ -42,7 +42,6 @@ static esp_image_metadata_t getSketchMeta( const esp_partition_t* running ) {
 }
 */
 
-
 // from https://github.com/lovyan03/M5Stack_LovyanLauncher
 bool comparePartition(const esp_partition_t* src1, const esp_partition_t* src2, size_t length) {
     size_t lengthLeft = length;
@@ -97,7 +96,7 @@ void copyPartition() {
   const esp_partition_t *nextupdate = esp_ota_get_next_update_partition(NULL);
   const char* menubinfilename PROGMEM {MENU_BIN} ;
   size_t sksize = ESP.getSketchSize();
-  bool flgSD = false;//M5_FS.begin( TFCARD_CS_PIN, SPI, 40000000 );
+  bool flgSD = M5_FS.begin( TFCARD_CS_PIN, /*SPI*/SPI_EXT, 40000000 );
   File dst;
   if (flgSD) {
     dst = (M5_FS.open(menubinfilename, FILE_WRITE ));
@@ -124,7 +123,7 @@ void checkMenuStickyPartition() {
     tft.drawString("TobozoLauncher on app0", 16, 10, 2);
     size_t sksize = ESP.getSketchSize();
     if (!comparePartition(running, nextupdate, sksize)) {
-      bool flgSD = false;//M5_FS.begin( TFCARD_CS_PIN, SPI, 40000000 );
+      bool flgSD = M5_FS.begin( TFCARD_CS_PIN, /*SPI*/SPI_EXT, 40000000 );
       tft.drawString("Synchronizing 'app1' partition", 16, 24, 2);
       File dst;
       if (flgSD) {
